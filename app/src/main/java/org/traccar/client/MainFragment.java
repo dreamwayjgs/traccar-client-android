@@ -195,6 +195,9 @@ public class MainFragment extends PreferenceFragment implements OnSharedPreferen
         } else if (item.getItemId() == R.id.about) {
             startActivity(new Intent(getActivity(), AboutActivity.class));
             return true;
+        } else if (item.getItemId() == R.id.report) {
+            startActivity(new Intent(getActivity(), ReportActivity.class));
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }
