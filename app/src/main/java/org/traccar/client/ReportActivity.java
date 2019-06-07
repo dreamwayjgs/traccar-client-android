@@ -2,6 +2,7 @@ package org.traccar.client;
 
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.WindowManager;
 import android.webkit.WebSettings;
@@ -18,7 +19,6 @@ public class ReportActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.report);
         reportWebView = (WebView) findViewById(R.id.report_view);
         WebSettings webSettings = reportWebView.getSettings();
@@ -33,11 +33,19 @@ public class ReportActivity extends AppCompatActivity {
                 return true;
             }
         });
-        reportWebView.loadUrl("http://dbapp.hanyang.ac.kr/");
+        reportWebView.loadUrl("http://dbapp.hanyang.ac.kr/report");
 
 //        if (savedInstanceState == null) {
 //            Toast.makeText(getApplicationContext(), "HELL World", Toast.LENGTH_LONG).show();
 //        }
+    }
+
+    protected void onResume(){
+        super.onResume();
+        Log.d("Webview", "클리어");
+        reportWebView.clearCache(true);
+        reportWebView.clearHistory();
+        reportWebView.clearFormData();
     }
 
     @Override
