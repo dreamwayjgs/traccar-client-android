@@ -47,7 +47,9 @@
 
         <activity android:name=".AboutActivity"/>
 
-        <activity android:name=".ReportActivity"/>
+        <activity android:name=".ReportActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:configChanges="orientation|keyboardHidden|screenSize"/>
 
         <activity
             android:name=".ShortcutActivity"
