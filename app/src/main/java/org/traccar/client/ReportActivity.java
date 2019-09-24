@@ -1,18 +1,38 @@
 package org.traccar.client;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.WindowManager;
+import android.webkit.JavascriptInterface;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import static android.widget.Toast.*;
+
 public class ReportActivity extends AppCompatActivity {
+
+    public class WebAppInterface {
+        Context mContext;
+
+        WebAppInterface(Context c){
+            mContext = c;
+        }
+
+        @JavascriptInterface
+        public void showToast(String toast){
+            makeText(mContext, toast, LENGTH_SHORT).show();
+        }
+    }
 
     WebView reportWebView;
 
@@ -25,6 +45,10 @@ public class ReportActivity extends AppCompatActivity {
         webSettings.setJavaScriptEnabled(true);
         webSettings.setGeolocationEnabled(true);
         webSettings.setLoadWithOverviewMode(true);
+        reportWebView.addJavascriptInterface(new WebAppInterface(this), "Android");
+
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        Log.i("devicePref", preferences.getAll().toString());
 
         reportWebView.setWebViewClient(new WebViewClient() {
             @Override
@@ -33,13 +57,11 @@ public class ReportActivity extends AppCompatActivity {
                 return true;
             }
         });
-        reportWebView.loadUrl("http://dbapp.hanyang.ac.kr/report");
+        reportWebView.loadUrl("http://dbapp.hanyang.ac.kr/traccar/device/"+preferences.getString("id", "NULL"));
 
-//        if (savedInstanceState == null) {
-//            Toast.makeText(getApplicationContext(), "HELL World", Toast.LENGTH_LONG).show();
-//        }
     }
 
+    @Override
     protected void onResume(){
         super.onResume();
         Log.d("Webview", "클리어");

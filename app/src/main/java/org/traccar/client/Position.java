@@ -18,10 +18,13 @@ package org.traccar.client;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Build;
+import android.util.Log;
 
 import java.util.Date;
 
 public class Position {
+    private static final String TAG = MainFragment.class.getSimpleName();
+
 
     public Position() {
     }

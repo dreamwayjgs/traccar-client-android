@@ -1,6 +1,14 @@
 apply plugin: 'com.android.application'
 
 android {
+    signingConfigs {
+        regular {
+            storeFile file('E:\\Clouds_500G\\Dev\\traccar\\hyujaunt-keys\\hyujaunt-regular-release.jks')
+            storePassword 'gksdideo'
+            keyAlias = 'key0'
+            keyPassword 'gksdideo'
+        }
+    }
     compileSdkVersion 28
 
     defaultConfig {

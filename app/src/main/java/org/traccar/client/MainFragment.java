@@ -220,6 +220,7 @@ public class MainFragment extends PreferenceFragment implements OnSharedPreferen
             } else {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSIONS_REQUEST_LOCATION);
+                    Log.d(TAG, getActivity().getPackageName());
                 }
                 return;
             }
