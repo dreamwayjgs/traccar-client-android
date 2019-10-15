@@ -57,7 +57,7 @@ public class ReportActivity extends AppCompatActivity {
                 return true;
             }
         });
-        reportWebView.loadUrl("http://hyudbprojectj.tk/traccar/device/"+preferences.getString("id", "NULL"));
+        reportWebView.loadUrl("http://hyudbprojectj.name/traccar/device/"+preferences.getString("id", "NULL"));
 
     }
 
