@@ -15,7 +15,7 @@
         android:title="@string/settings_id_title" />
 
     <EditTextPreference
-        android:defaultValue="http://hyudbprojectj.tk:5055"
+        android:defaultValue="http://hyudbprojectj.name:5055"
         android:key="url"
         android:summary="@string/settings_url_summary"
         android:title="@string/settings_url_title" />

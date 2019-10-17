@@ -230,6 +230,7 @@ public class MainFragment extends PreferenceFragmentCompat implements OnSharedPr
             if (!permission) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     requestPermissions(requiredPermissions.toArray(new String[requiredPermissions.size()]), PERMISSIONS_REQUEST_LOCATION);
+
                 }
                 return;
             }
