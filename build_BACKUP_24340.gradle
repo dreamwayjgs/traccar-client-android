@@ -8,8 +8,13 @@ buildscript {
         maven { url 'https://maven.fabric.io/public' }
     }
     dependencies {
+<<<<<<< HEAD
+        classpath 'com.android.tools.build:gradle:3.4.1'
+        classpath 'com.google.gms:google-services:4.2.0'
+=======
         classpath 'com.android.tools.build:gradle:3.5.0'
         classpath 'com.google.gms:google-services:4.3.2'
+>>>>>>> origin/master
         classpath 'io.fabric.tools:gradle:1.26.1'
     }
 }

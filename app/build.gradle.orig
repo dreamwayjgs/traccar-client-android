@@ -1,6 +1,7 @@
 apply plugin: 'com.android.application'
 
 android {
+<<<<<<< HEAD
     signingConfigs {
         regular {
             storeFile file('E:\\Clouds_500G\\Dev\\traccar\\hyujaunt-keys\\hyujaunt-regular-release.jks')
@@ -9,7 +10,10 @@ android {
             keyPassword 'gksdideo'
         }
     }
+    compileSdkVersion 28
+=======
     compileSdkVersion 29
+>>>>>>> origin/master
 
     defaultConfig {
         applicationId "org.traccar.client"
