@@ -30,7 +30,7 @@ public class AboutActivity extends AppCompatActivity {
 
         TextView title = findViewById(R.id.title);
         try {
-            title.setText(title.getText() + " " + getPackageManager().getPackageInfo(this.getPackageName(), 0).versionName + ".name");
+            title.setText(title.getText() + " " + getPackageManager().getPackageInfo(this.getPackageName(), 0).versionName + ".name.www");
         } catch (NameNotFoundException e) {
             Log.w(AboutActivity.class.getSimpleName(), e);
         }
