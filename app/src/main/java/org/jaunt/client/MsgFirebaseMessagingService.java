@@ -1,5 +1,6 @@
 package org.jaunt.client;
 
+import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -27,20 +28,29 @@ public class MsgFirebaseMessagingService extends FirebaseMessagingService {
         super.onNewToken(s);
 //        KeyManager.setSharedPreferenceString(getApplicationContext(), "fcm_token", s);
         Log.e(TAG, "onNewToken: " + s);
+        sendRegistrationToServer(s);
+    }
+
+    private void sendRegistrationToServer(String token){
+
+        Log.e(TAG, token);
+
     }
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
 //Here notification is recieved from server
         try {
-            sendNotification(remoteMessage.getData().get("title"), remoteMessage.getData().get("message"));
+            String title = remoteMessage.getData().get("title");
+            Log.d(TAG, title);
+            sendNotification(remoteMessage.getData().get("title"), remoteMessage.getData().get("message"), remoteMessage.getData().get("action"));
         } catch (Exception e) {
             e.printStackTrace();
         }
 
     }
 
-    private void sendNotification(String title, String messageBody) {
+    private void sendNotification(String title, String messageBody, String action) {
         Intent intent = new Intent(getApplicationContext(), ReportActivity.class);
 //you can use your launcher Activity insted of SplashActivity, But if the Activity you used here is not launcher Activty than its not work when App is in background.
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -52,18 +62,19 @@ public class MsgFirebaseMessagingService extends FirebaseMessagingService {
         NotificationManager mNotifyManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 //For Android Version Orio and greater than orio.
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            int importance = NotificationManager.IMPORTANCE_LOW;
-            NotificationChannel mChannel = new NotificationChannel("Sesame", "Sesame", importance);
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel mChannel = new NotificationChannel("Report", "Report", importance);
             mChannel.setDescription(messageBody);
             mChannel.enableLights(true);
-            mChannel.setLightColor(Color.RED);
+            mChannel.setLightColor(Color.GREEN);
             mChannel.enableVibration(true);
             mChannel.setVibrationPattern(new long[]{100, 200, 300, 400, 500, 400, 300, 200, 400});
+            mChannel.setLockscreenVisibility(Notification.VISIBILITY_PRIVATE);
 
             mNotifyManager.createNotificationChannel(mChannel);
         }
 //For Android Version lower than oreo.
-        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this, "Seasame");
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this, "Report");
         mBuilder.setContentTitle(title)
                 .setContentText(messageBody)
                 .setSmallIcon(R.drawable.ic_stat_notify)
