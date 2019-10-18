@@ -6,7 +6,18 @@ import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
 public class MsgFirebaseMessagingService extends FirebaseMessagingService {
-    private static final String TAG = MainFragment.class.getSimpleName();
+    private static final String TAG = "FCM Service";
+
+    @Override
+    public void onNewToken(String token) {
+        String t = token;
+        Log.d(TAG, "Refreshed token: " + token);
+
+        // If you want to send messages to this application instance or
+        // manage this apps subscriptions on the server side, send the
+        // Instance ID token to your app server.
+//        sendRegistrationToServer(token);
+    }
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
