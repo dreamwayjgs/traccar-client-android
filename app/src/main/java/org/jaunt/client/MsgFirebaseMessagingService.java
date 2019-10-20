@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.media.AudioAttributes;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.util.Log;
@@ -87,15 +88,22 @@ public class MsgFirebaseMessagingService extends FirebaseMessagingService {
 
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationManager mNotifyManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
 //For Android Version Orio and greater than orio.
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            int importance = NotificationManager.IMPORTANCE_HIGH;
             NotificationChannel mChannel = new NotificationChannel("Report", "Report", importance);
             mChannel.setDescription(messageBody);
             mChannel.enableLights(true);
             mChannel.setLightColor(Color.GREEN);
             mChannel.enableVibration(true);
             mChannel.setVibrationPattern(new long[]{100, 200, 300, 400, 500, 400, 300, 200, 400});
+
+            AudioAttributes att = new AudioAttributes.Builder()
+                    .setUsage(AudioAttributes.USAGE_NOTIFICATION)
+                    .setContentType(AudioAttributes.CONTENT_TYPE_SPEECH)
+                    .build();
+            mChannel.setSound(defaultSoundUri, att);
             mChannel.setLockscreenVisibility(Notification.VISIBILITY_PRIVATE);
 
             mNotifyManager.createNotificationChannel(mChannel);
@@ -111,7 +119,10 @@ public class MsgFirebaseMessagingService extends FirebaseMessagingService {
                 .setColor(Color.parseColor("#FFD600"))
                 .setContentIntent(pendingIntent)
                 .setChannelId("Report")
-                .setPriority(NotificationCompat.PRIORITY_LOW);
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setVibrate(new long[]{100, 200, 300, 400, 500, 400, 300, 200, 400})
+                .setLights(Color.GREEN, 3000, 3000)
+                .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
 
         mNotifyManager.notify(count, mBuilder.build());
         count++;
