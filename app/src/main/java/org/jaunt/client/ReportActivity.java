@@ -1,5 +1,6 @@
 package org.jaunt.client;
 
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -55,6 +56,12 @@ public class ReportActivity extends AppCompatActivity {
             }
         });
         reportWebView.loadUrl("https://hyudbprojectj.name/traccar/device/"+preferences.getString("id", "Unknown"));
+
+        NotificationManager mNotifyManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            mNotifyManager.deleteNotificationChannel("Report");
+        }
+
 
     }
 
