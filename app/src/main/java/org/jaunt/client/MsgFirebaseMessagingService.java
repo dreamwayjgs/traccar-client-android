@@ -6,6 +6,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.media.RingtoneManager;
@@ -13,11 +14,16 @@ import android.net.Uri;
 import android.util.Log;
 
 import androidx.core.app.NotificationCompat;
+import androidx.preference.PreferenceManager;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
-import javax.net.ssl.KeyManager;
+import okhttp3.FormBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 public class MsgFirebaseMessagingService extends FirebaseMessagingService {
     private static final String TAG = "FCM Service";
@@ -31,11 +37,31 @@ public class MsgFirebaseMessagingService extends FirebaseMessagingService {
         sendRegistrationToServer(s);
     }
 
-    private void sendRegistrationToServer(String token){
+    private void sendRegistrationToServer(String token) {
+        String url = "https://hyudbprojectj.name/register/fcm/token";
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        String uniqueId = preferences.getString("id", "Unknown");
+        OkHttpClient client = new OkHttpClient();
 
-        Log.e(TAG, token);
+        Log.d(TAG, uniqueId + " / " + token);
 
+        RequestBody formBody = new FormBody.Builder()
+                .add("uniqueId", uniqueId)
+                .add("token", token)
+                .build();
+        Request request = new Request.Builder()
+                .url(url)
+                .post(formBody)
+                .build();
+
+        try {
+            Response response = client.newCall(request).execute();
+            Log.d(TAG, response.body().string());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
+
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
@@ -43,14 +69,15 @@ public class MsgFirebaseMessagingService extends FirebaseMessagingService {
         try {
             String title = remoteMessage.getData().get("title");
             Log.d(TAG, title);
-            sendNotification(remoteMessage.getData().get("title"), remoteMessage.getData().get("message"), remoteMessage.getData().get("action"));
+            Log.d(TAG, remoteMessage.getData().toString());
+            sendNotification(remoteMessage.getData().get("title"), remoteMessage.getData().get("body"));
         } catch (Exception e) {
             e.printStackTrace();
         }
 
     }
 
-    private void sendNotification(String title, String messageBody, String action) {
+    private void sendNotification(String title, String messageBody) {
         Intent intent = new Intent(getApplicationContext(), ReportActivity.class);
 //you can use your launcher Activity insted of SplashActivity, But if the Activity you used here is not launcher Activty than its not work when App is in background.
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -83,7 +110,7 @@ public class MsgFirebaseMessagingService extends FirebaseMessagingService {
                 .setSound(defaultSoundUri)
                 .setColor(Color.parseColor("#FFD600"))
                 .setContentIntent(pendingIntent)
-                .setChannelId("Sesame")
+                .setChannelId("Report")
                 .setPriority(NotificationCompat.PRIORITY_LOW);
 
         mNotifyManager.notify(count, mBuilder.build());

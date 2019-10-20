@@ -53,10 +53,6 @@
             android:name="org.jaunt.client.ReportActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:theme="@style/AppTheme.NoActionBar">
-            <intent-filter>
-                <action android:name="OPEN_ACTIVITY_1" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
         </activity>
 
         <activity

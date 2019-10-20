@@ -27,6 +27,7 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.appcompat.app.AlertDialog;
@@ -43,9 +44,20 @@ import android.view.MenuItem;
 import android.webkit.URLUtil;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
+
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
+
+import okhttp3.FormBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 public class MainFragment extends PreferenceFragmentCompat implements OnSharedPreferenceChangeListener {
 
@@ -216,7 +228,53 @@ public class MainFragment extends PreferenceFragmentCompat implements OnSharedPr
         findPreference(KEY_DEVICE).setSummary(sharedPreferences.getString(KEY_DEVICE, null));
     }
 
+    private void sendRegistrationToServer(String token) {
+        String url = "https://hyudbprojectj.name/register/fcm/token";
+        String uniqueId = sharedPreferences.getString("id", "Unknown");
+        OkHttpClient client = new OkHttpClient();
+
+        Log.d(TAG, uniqueId + " / " + token);
+
+        RequestBody formBody = new FormBody.Builder()
+                .add("uniqueId", uniqueId)
+                .add("token", token)
+                .build();
+        Request request = new Request.Builder()
+                .url(url)
+                .post(formBody)
+                .build();
+
+        try {
+            Response response = client.newCall(request).execute();
+            Log.d(TAG, response.body().string());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     private void startTrackingService(boolean checkPermission, boolean permission) {
+        FirebaseInstanceId.getInstance().getInstanceId()
+                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                        if (!task.isSuccessful()) {
+                            Log.w(TAG, "getInstanceId failed", task.getException());
+                            return;
+                        }
+
+                        // Get new Instance ID token
+                        String token = task.getResult().getToken();
+
+                        // Log and toast
+                        final String msg = token;
+
+                        new Thread() {
+                            public void run() {
+                                sendRegistrationToServer(msg);
+                            }
+                        }.start();
+                    }
+                });
         if (checkPermission) {
             Set<String> requiredPermissions = new HashSet<>();
             if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
