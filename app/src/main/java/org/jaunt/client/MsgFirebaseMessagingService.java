@@ -91,7 +91,7 @@ public class MsgFirebaseMessagingService extends FirebaseMessagingService {
 
 //For Android Version Orio and greater than orio.
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            int importance = NotificationManager.IMPORTANCE_LOW;
             NotificationChannel mChannel = new NotificationChannel("Report", "Report", importance);
             mChannel.setDescription(messageBody);
             mChannel.enableLights(true);
@@ -119,7 +119,7 @@ public class MsgFirebaseMessagingService extends FirebaseMessagingService {
                 .setColor(Color.parseColor("#FFD600"))
                 .setContentIntent(pendingIntent)
                 .setChannelId("Report")
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setPriority(NotificationCompat.PRIORITY_LOW)
                 .setVibrate(new long[]{100, 200, 300, 400, 500, 400, 300, 200, 400})
                 .setLights(Color.GREEN, 3000, 3000)
                 .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
