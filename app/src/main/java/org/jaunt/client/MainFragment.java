@@ -27,22 +27,21 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
-import androidx.appcompat.app.AlertDialog;
-import androidx.preference.EditTextPreference;
-import androidx.preference.Preference;
-import androidx.preference.PreferenceFragmentCompat;
-import androidx.preference.PreferenceManager;
-import androidx.preference.TwoStatePreference;
-
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.webkit.URLUtil;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.ContextCompat;
+import androidx.preference.EditTextPreference;
+import androidx.preference.Preference;
+import androidx.preference.PreferenceFragmentCompat;
+import androidx.preference.PreferenceManager;
+import androidx.preference.TwoStatePreference;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -52,12 +51,6 @@ import com.google.firebase.iid.InstanceIdResult;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
-
-import okhttp3.FormBody;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
 
 public class MainFragment extends PreferenceFragmentCompat implements OnSharedPreferenceChangeListener {
 
@@ -228,30 +221,6 @@ public class MainFragment extends PreferenceFragmentCompat implements OnSharedPr
         findPreference(KEY_DEVICE).setSummary(sharedPreferences.getString(KEY_DEVICE, null));
     }
 
-    private void sendRegistrationToServer(String token) {
-        String url = "https://hyudbprojectj.name/register/fcm/token";
-        String uniqueId = sharedPreferences.getString("id", "Unknown");
-        OkHttpClient client = new OkHttpClient();
-
-        Log.d(TAG, uniqueId + " / " + token);
-
-        RequestBody formBody = new FormBody.Builder()
-                .add("uniqueId", uniqueId)
-                .add("token", token)
-                .build();
-        Request request = new Request.Builder()
-                .url(url)
-                .post(formBody)
-                .build();
-
-        try {
-            Response response = client.newCall(request).execute();
-            Log.d(TAG, response.body().string());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
     private void startTrackingService(boolean checkPermission, boolean permission) {
         FirebaseInstanceId.getInstance().getInstanceId()
                 .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
@@ -270,7 +239,9 @@ public class MainFragment extends PreferenceFragmentCompat implements OnSharedPr
 
                         new Thread() {
                             public void run() {
-                                sendRegistrationToServer(msg);
+                                MessagingHelper.sendRegistrationToServer(
+                                        sharedPreferences.getString("id", "Unknown"),
+                                        msg, getContext());
                             }
                         }.start();
                     }

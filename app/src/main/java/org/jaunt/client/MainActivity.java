@@ -15,10 +15,15 @@
  */
 package org.jaunt.client;
 
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.security.ProviderInstaller;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -27,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction().replace(android.R.id.content, new MainFragment()).commit();
         }

@@ -6,7 +6,6 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.media.AudioAttributes;
@@ -20,11 +19,6 @@ import androidx.preference.PreferenceManager;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
-import okhttp3.FormBody;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
 
 public class MsgFirebaseMessagingService extends FirebaseMessagingService {
     private static final String TAG = "FCM Service";
@@ -35,34 +29,11 @@ public class MsgFirebaseMessagingService extends FirebaseMessagingService {
         super.onNewToken(s);
 //        KeyManager.setSharedPreferenceString(getApplicationContext(), "fcm_token", s);
         Log.e(TAG, "onNewToken: " + s);
-        sendRegistrationToServer(s);
+        MessagingHelper.sendRegistrationToServer(
+                PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("id", "Unknown")
+                , s
+                , getApplicationContext());
     }
-
-    private void sendRegistrationToServer(String token) {
-        String url = "https://hyudbprojectj.name/register/fcm/token";
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        String uniqueId = preferences.getString("id", "Unknown");
-        OkHttpClient client = new OkHttpClient();
-
-        Log.d(TAG, uniqueId + " / " + token);
-
-        RequestBody formBody = new FormBody.Builder()
-                .add("uniqueId", uniqueId)
-                .add("token", token)
-                .build();
-        Request request = new Request.Builder()
-                .url(url)
-                .post(formBody)
-                .build();
-
-        try {
-            Response response = client.newCall(request).execute();
-            Log.d(TAG, response.body().string());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
