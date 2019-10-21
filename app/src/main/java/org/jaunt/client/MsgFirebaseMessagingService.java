@@ -6,11 +6,15 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.media.AudioAttributes;
 import android.media.RingtoneManager;
 import android.net.Uri;
+import android.os.Build;
+import android.os.Bundle;
+import android.provider.Browser;
 import android.util.Log;
 
 import androidx.core.app.NotificationCompat;
@@ -27,12 +31,8 @@ public class MsgFirebaseMessagingService extends FirebaseMessagingService {
     @Override
     public void onNewToken(String s) {
         super.onNewToken(s);
-//        KeyManager.setSharedPreferenceString(getApplicationContext(), "fcm_token", s);
         Log.e(TAG, "onNewToken: " + s);
-        MessagingHelper.sendRegistrationToServer(
-                PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("id", "Unknown")
-                , s
-                , getApplicationContext());
+        MessagingHelper.sendRegistrationToServer(s, getApplicationContext());
     }
 
     @Override
@@ -42,7 +42,8 @@ public class MsgFirebaseMessagingService extends FirebaseMessagingService {
             String title = remoteMessage.getData().get("title");
             Log.d(TAG, title);
             Log.d(TAG, remoteMessage.getData().toString());
-            sendNotification(remoteMessage.getData().get("title"), remoteMessage.getData().get("body"));
+            sendNotification(remoteMessage.getData().get("title")
+                    , remoteMessage.getData().get("body"));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -50,7 +51,19 @@ public class MsgFirebaseMessagingService extends FirebaseMessagingService {
     }
 
     private void sendNotification(String title, String messageBody) {
-        Intent intent = new Intent(getApplicationContext(), ReportActivity.class);
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        Intent intent;
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.LOLLIPOP_MR1) {
+            String url = "https://hyudbprojectj.name/traccar/device/" + prefs.getString("id", "Unknown");
+            intent = new Intent(
+                    Intent.ACTION_VIEW, Uri.parse(url));
+            Bundle bundle = new Bundle();
+            bundle.putString("token", prefs.getString("token", ""));
+            intent.putExtra(Browser.EXTRA_HEADERS, bundle);
+//            intent.setPackage("com.android.chrome");
+        } else {
+            intent = new Intent(getApplicationContext(), ReportActivity.class);
+        }
 //you can use your launcher Activity insted of SplashActivity, But if the Activity you used here is not launcher Activty than its not work when App is in background.
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 //Add Any key-value to pass extras to intent

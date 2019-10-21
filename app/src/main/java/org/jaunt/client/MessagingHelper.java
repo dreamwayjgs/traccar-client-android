@@ -1,10 +1,11 @@
 package org.jaunt.client;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.util.Log;
 
-import androidx.annotation.Nullable;
+import androidx.preference.PreferenceManager;
 
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
@@ -27,8 +28,15 @@ import okhttp3.Response;
 public class MessagingHelper {
     private static final String TAG = "Messaging Helper";
 
-    public static void sendRegistrationToServer(String uniqueId, String token, @Nullable Context context) {
+    public static void sendRegistrationToServer(String token, Context context) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        String uniqueId = prefs.getString("id", "Unknown");
         Log.d(TAG, uniqueId + " / " + token);
+
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString("token", token);
+        editor.commit();
+
         String url = "https://hyudbprojectj.name/register/fcm/token";
 
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {

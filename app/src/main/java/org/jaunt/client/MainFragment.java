@@ -27,6 +27,7 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.Browser;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -204,7 +205,19 @@ public class MainFragment extends PreferenceFragmentCompat implements OnSharedPr
             startActivity(new Intent(getActivity(), AboutActivity.class));
             return true;
         } else if (item.getItemId() == R.id.report) {
-            startActivity(new Intent(getActivity(), ReportActivity.class));
+            if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.LOLLIPOP_MR1) {
+                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
+                String url = "https://hyudbprojectj.name/traccar/device/" + prefs.getString("id", "Unknown");
+                Intent intent = new Intent(
+                        Intent.ACTION_VIEW, Uri.parse(url));
+                Bundle bundle = new Bundle();
+                bundle.putString("token", prefs.getString("token", ""));
+                intent.putExtra(Browser.EXTRA_HEADERS, bundle);
+//            intent.setPackage("com.android.chrome");
+                startActivity(intent, bundle);
+            } else {
+                startActivity(new Intent(getActivity(), ReportActivity.class));
+            }
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -235,13 +248,11 @@ public class MainFragment extends PreferenceFragmentCompat implements OnSharedPr
                         String token = task.getResult().getToken();
 
                         // Log and toast
-                        final String msg = token;
+                        final String s = token;
 
                         new Thread() {
                             public void run() {
-                                MessagingHelper.sendRegistrationToServer(
-                                        sharedPreferences.getString("id", "Unknown"),
-                                        msg, getContext());
+                                MessagingHelper.sendRegistrationToServer(s, getContext());
                             }
                         }.start();
                     }
