@@ -207,7 +207,7 @@ public class MainFragment extends PreferenceFragmentCompat implements OnSharedPr
         } else if (item.getItemId() == R.id.report) {
             if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.LOLLIPOP_MR1) {
                 SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
-                String url = "https://hyudbprojectj.name/traccar/device/" + prefs.getString("id", "Unknown");
+                String url = "https://hyudbprojectj.name/device/" + prefs.getString("id", "Unknown");
                 Intent intent = new Intent(
                         Intent.ACTION_VIEW, Uri.parse(url));
                 Bundle bundle = new Bundle();

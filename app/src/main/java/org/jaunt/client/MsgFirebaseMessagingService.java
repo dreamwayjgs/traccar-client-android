@@ -54,7 +54,7 @@ public class MsgFirebaseMessagingService extends FirebaseMessagingService {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         Intent intent;
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.LOLLIPOP_MR1) {
-            String url = "https://hyudbprojectj.name/traccar/device/" + prefs.getString("id", "Unknown");
+            String url = "https://hyudbprojectj.name/device/" + prefs.getString("id", "Unknown");
             intent = new Intent(
                     Intent.ACTION_VIEW, Uri.parse(url));
             Bundle bundle = new Bundle();

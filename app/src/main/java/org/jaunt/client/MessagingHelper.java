@@ -37,7 +37,7 @@ public class MessagingHelper {
         editor.putString("token", token);
         editor.commit();
 
-        String url = "https://hyudbprojectj.name/register/fcm/token";
+        String url = "https://hyudbprojectj.name/fcm/token";
 
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
             try {

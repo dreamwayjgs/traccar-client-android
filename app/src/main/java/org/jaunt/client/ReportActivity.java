@@ -41,8 +41,8 @@ public class ReportActivity extends AppCompatActivity {
                 return true;
             }
         });
-        Log.i("Report URL", "https://hyudbprojectj.name/traccar/device/" + preferences.getString("id", "Unknown"));
-        reportWebView.loadUrl("https://hyudbprojectj.name/traccar/device/" + preferences.getString("id", "Unknown"));
+        Log.i("Report URL", "https://hyudbprojectj.name/device/" + preferences.getString("id", "Unknown"));
+        reportWebView.loadUrl("https://hyudbprojectj.name/device/" + preferences.getString("id", "Unknown"));
 
         NotificationManager mNotifyManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
