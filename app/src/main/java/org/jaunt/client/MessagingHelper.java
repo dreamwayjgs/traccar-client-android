@@ -72,7 +72,7 @@ public class MessagingHelper {
 //                        , uniqueId
 //                        , token);
 
-                String requestBody = String.format("uniqueId=%s&token=%s}"
+                String requestBody = String.format("uniqueId=%s&token=%s"
                         , uniqueId
                         , token);
 

@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.KeyEvent;
-import android.webkit.JavascriptInterface;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -15,35 +14,22 @@ import android.webkit.WebViewClient;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import static android.widget.Toast.*;
-
 public class ReportActivity extends AppCompatActivity {
-
-    public class WebAppInterface {
-        Context mContext;
-
-        WebAppInterface(Context c){
-            mContext = c;
-        }
-
-        @JavascriptInterface
-        public void showToast(String toast){
-            makeText(mContext, toast, LENGTH_SHORT).show();
-        }
-    }
 
     WebView reportWebView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.report);
-        reportWebView = (WebView) findViewById(R.id.report_view);
+        reportWebView = (WebView) findViewById(R.id.report);
+
         WebSettings webSettings = reportWebView.getSettings();
         webSettings.setJavaScriptEnabled(true);
-        webSettings.setGeolocationEnabled(true);
-        webSettings.setLoadWithOverviewMode(true);
-        reportWebView.addJavascriptInterface(new WebAppInterface(this), "Android");
+//        webSettings.setLoadWithOverviewMode(true);
+//        webSettings.setGeolocationEnabled(true);
+//        reportWebView.addJavascriptInterface(new WebAppInterface(this), "Android");
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         Log.i("devicePref", preferences.getAll().toString());
@@ -55,18 +41,17 @@ public class ReportActivity extends AppCompatActivity {
                 return true;
             }
         });
-        reportWebView.loadUrl("https://hyudbprojectj.name/traccar/device/"+preferences.getString("id", "Unknown"));
+        Log.i("Report URL", "https://hyudbprojectj.name/traccar/device/" + preferences.getString("id", "Unknown"));
+        reportWebView.loadUrl("https://hyudbprojectj.name/traccar/device/" + preferences.getString("id", "Unknown"));
 
         NotificationManager mNotifyManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             mNotifyManager.deleteNotificationChannel("Report");
         }
-
-
     }
 
     @Override
-    protected void onResume(){
+    protected void onResume() {
         super.onResume();
         Log.d("Webview", "클리어");
         reportWebView.clearCache(true);
@@ -86,3 +71,4 @@ public class ReportActivity extends AppCompatActivity {
     }
 
 }
+
