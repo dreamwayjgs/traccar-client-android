@@ -14,6 +14,9 @@ import android.webkit.WebViewClient;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class ReportActivity extends AppCompatActivity {
 
     WebView reportWebView;
@@ -42,7 +45,10 @@ public class ReportActivity extends AppCompatActivity {
             }
         });
         Log.i("Report URL", "https://hyudbprojectj.name/device/" + preferences.getString("id", "Unknown"));
-        reportWebView.loadUrl("https://hyudbprojectj.name/device/" + preferences.getString("id", "Unknown"));
+        Map<String, String> headers = new HashMap<>();
+        headers.put("Authorization", preferences.getString("token", ""));
+        reportWebView.loadUrl("https://hyudbprojectj.name/device/" + preferences.getString("id", "Unknown")
+                , headers);
 
         NotificationManager mNotifyManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {

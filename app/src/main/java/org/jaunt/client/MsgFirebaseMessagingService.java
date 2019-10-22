@@ -58,7 +58,8 @@ public class MsgFirebaseMessagingService extends FirebaseMessagingService {
             intent = new Intent(
                     Intent.ACTION_VIEW, Uri.parse(url));
             Bundle bundle = new Bundle();
-            bundle.putString("token", prefs.getString("token", ""));
+            Log.d("TOKKEN", prefs.getString("token", ""));
+            bundle.putString("Authorization", prefs.getString("token", ""));
             intent.putExtra(Browser.EXTRA_HEADERS, bundle);
 //            intent.setPackage("com.android.chrome");
         } else {

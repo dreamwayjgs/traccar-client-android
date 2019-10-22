@@ -37,6 +37,8 @@ public class MessagingHelper {
         editor.putString("token", token);
         editor.commit();
 
+        Log.d(TAG, "저장했다" + prefs.getString("token", ""));
+
         String url = "https://hyudbprojectj.name/fcm/token";
 
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
