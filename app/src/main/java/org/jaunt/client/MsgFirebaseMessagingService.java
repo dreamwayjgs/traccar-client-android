@@ -31,7 +31,6 @@ public class MsgFirebaseMessagingService extends FirebaseMessagingService {
     @Override
     public void onNewToken(String s) {
         super.onNewToken(s);
-        Log.e(TAG, "onNewToken: " + s);
         MessagingHelper.sendRegistrationToServer(s, getApplicationContext());
     }
 
@@ -40,8 +39,6 @@ public class MsgFirebaseMessagingService extends FirebaseMessagingService {
 //Here notification is recieved from server
         try {
             String title = remoteMessage.getData().get("title");
-            Log.d(TAG, title);
-            Log.d(TAG, remoteMessage.getData().toString());
             sendNotification(remoteMessage.getData().get("title")
                     , remoteMessage.getData().get("body"));
         } catch (Exception e) {
@@ -58,10 +55,8 @@ public class MsgFirebaseMessagingService extends FirebaseMessagingService {
             intent = new Intent(
                     Intent.ACTION_VIEW, Uri.parse(url));
             Bundle bundle = new Bundle();
-            Log.d("TOKKEN", prefs.getString("token", ""));
             bundle.putString("Authorization", prefs.getString("token", ""));
             intent.putExtra(Browser.EXTRA_HEADERS, bundle);
-//            intent.setPackage("com.android.chrome");
         } else {
             intent = new Intent(getApplicationContext(), ReportActivity.class);
         }

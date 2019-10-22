@@ -211,11 +211,8 @@ public class MainFragment extends PreferenceFragmentCompat implements OnSharedPr
                 Intent intent = new Intent(
                         Intent.ACTION_VIEW, Uri.parse(url));
                 Bundle bundle = new Bundle();
-                Log.d("TOKKEN", prefs.getString("id", ""));
-                Log.d("TOKKEN", prefs.getString("token", ""));
                 bundle.putString("Authorization", prefs.getString("token", ""));
                 intent.putExtra(Browser.EXTRA_HEADERS, bundle);
-//            intent.setPackage("com.android.chrome");
                 startActivity(intent, bundle);
             } else {
                 startActivity(new Intent(getActivity(), ReportActivity.class));
