@@ -17,9 +17,10 @@ package org.jaunt.client;
 
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Bundle;
-import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public class AboutActivity extends AppCompatActivity {
 
@@ -30,7 +31,7 @@ public class AboutActivity extends AppCompatActivity {
 
         TextView title = findViewById(R.id.title);
         try {
-            title.setText(title.getText() + " " + getPackageManager().getPackageInfo(this.getPackageName(), 0).versionName + ".name.www");
+            title.setText(title.getText() + " Based on Traccar " + getPackageManager().getPackageInfo(this.getPackageName(), 0).versionName);
         } catch (NameNotFoundException e) {
             Log.w(AboutActivity.class.getSimpleName(), e);
         }

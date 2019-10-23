@@ -34,4 +34,10 @@
         android:text="@string/about_web"
         android:autoLink="web" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/about_jaunt"
+        android:autoLink="web" />
+
 </LinearLayout>
