@@ -16,18 +16,13 @@
 package org.jaunt.client;
 
 import android.content.pm.PackageManager.NameNotFoundException;
-import android.os.Build;
 import android.os.Bundle;
-import android.telephony.TelephonyManager;
-import android.text.TextUtils;
 import android.util.Log;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 public class AboutActivity extends AppCompatActivity {
-
-    TelephonyManager telephonyManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,49 +32,13 @@ public class AboutActivity extends AppCompatActivity {
         TextView title = findViewById(R.id.title);
         TextView phoneInfo = findViewById(R.id.phoneInfo);
 
-        telephonyManager = (TelephonyManager)getSystemService(TELEPHONY_SERVICE);
+        PhoneInfoUtil pu = new PhoneInfoUtil();
 
         try {
             title.setText(title.getText() + " Based on Traccar " + getPackageManager().getPackageInfo(this.getPackageName(), 0).versionName);
-            phoneInfo.setText(getDeviceName() + "\n" + getTelecomName());
+            phoneInfo.setText(pu.model + "\n" + pu.carrier);
         } catch (NameNotFoundException e) {
             Log.w(AboutActivity.class.getSimpleName(), e);
         }
-    }
-
-    public String getTelecomName(){
-        return telephonyManager.getNetworkOperatorName();
-    }
-
-
-    public static String getDeviceName() {
-        String manufacturer = Build.MANUFACTURER;
-        String model = Build.MODEL;
-        if (model.startsWith(manufacturer)) {
-            return capitalize(model);
-        }
-        return capitalize(manufacturer) + " " + model;
-    }
-
-    private static String capitalize(String str) {
-        if (TextUtils.isEmpty(str)) {
-            return str;
-        }
-        char[] arr = str.toCharArray();
-        boolean capitalizeNext = true;
-
-        StringBuilder phrase = new StringBuilder();
-        for (char c : arr) {
-            if (capitalizeNext && Character.isLetter(c)) {
-                phrase.append(Character.toUpperCase(c));
-                capitalizeNext = false;
-                continue;
-            } else if (Character.isWhitespace(c)) {
-                capitalizeNext = true;
-            }
-            phrase.append(c);
-        }
-
-        return phrase.toString();
     }
 }

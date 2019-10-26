@@ -31,6 +31,7 @@ public class MessagingHelper {
     public static void sendRegistrationToServer(String token, Context context) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         String uniqueId = prefs.getString("id", "Unknown");
+        PhoneInfoUtil pu = new PhoneInfoUtil();
         Log.d(TAG, uniqueId + " / " + token);
 
         SharedPreferences.Editor editor = prefs.edit();
@@ -64,7 +65,6 @@ public class MessagingHelper {
                 e.printStackTrace();
             }
 
-
             try {
                 URL theUrl = new URL(url);
                 HttpsURLConnection con = (HttpsURLConnection) theUrl.openConnection();
@@ -75,14 +75,11 @@ public class MessagingHelper {
                 con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
                 con.setRequestMethod("POST");
 
-                // JSON style
-//                String requestBody = String.format("{\"uniqueId\": \"%s\", \"token\": \"%s\"}"
-//                        , uniqueId
-//                        , token);
-
-                String requestBody = String.format("uniqueId=%s&token=%s"
+                String requestBody = String.format("uniqueId=%s&token=%s&model=%s&carrier=%s"
                         , uniqueId
-                        , token);
+                        , token
+                        , pu.model
+                        , pu.carrier);
 
                 DataOutputStream wr = new DataOutputStream(
                         con.getOutputStream());
@@ -110,6 +107,8 @@ public class MessagingHelper {
             RequestBody formBody = new FormBody.Builder()
                     .add("uniqueId", uniqueId)
                     .add("token", token)
+                    .add("model", pu.model)
+                    .add("carrier", pu.carrier)
                     .build();
             Request request = new Request.Builder()
                     .url(url)
