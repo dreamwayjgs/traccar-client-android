@@ -40,4 +40,10 @@
         android:text="@string/about_jaunt"
         android:autoLink="web" />
 
+    <TextView
+        android:id="@+id/phoneInfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+         />
+
 </LinearLayout>
