@@ -10,8 +10,18 @@ public class PhoneInfoUtil {
     public String carrier;
 
     public PhoneInfoUtil(){
-        this.model = getDeviceName();
-        this.carrier = getTelecomName();
+        try {
+            this.model = getDeviceName();
+        }
+        catch (Exception e){
+            this.model = "Unknown";
+        }
+        try {
+            this.carrier = getTelecomName();
+        }
+        catch (Exception e){
+            this.carrier = "Unknown";
+        }
     }
 
     public String getTelecomName(){
