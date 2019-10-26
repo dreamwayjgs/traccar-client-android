@@ -1,5 +1,6 @@
 package org.jaunt.client;
 
+import android.content.Context;
 import android.os.Build;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
@@ -9,22 +10,21 @@ public class PhoneInfoUtil {
     public String model;
     public String carrier;
 
-    public PhoneInfoUtil(){
+    public PhoneInfoUtil(Context context) {
         try {
             this.model = getDeviceName();
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             this.model = "Unknown";
         }
+        telephonyManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
         try {
             this.carrier = getTelecomName();
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             this.carrier = "Unknown";
         }
     }
 
-    public String getTelecomName(){
+    public String getTelecomName() {
         return telephonyManager.getNetworkOperatorName();
     }
 

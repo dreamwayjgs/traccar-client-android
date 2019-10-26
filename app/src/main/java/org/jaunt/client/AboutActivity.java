@@ -32,7 +32,7 @@ public class AboutActivity extends AppCompatActivity {
         TextView title = findViewById(R.id.title);
         TextView phoneInfo = findViewById(R.id.phoneInfo);
 
-        PhoneInfoUtil pu = new PhoneInfoUtil();
+        PhoneInfoUtil pu = new PhoneInfoUtil(getApplicationContext());
 
         try {
             title.setText(title.getText() + " Based on Traccar " + getPackageManager().getPackageInfo(this.getPackageName(), 0).versionName);

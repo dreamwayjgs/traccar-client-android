@@ -31,7 +31,7 @@ public class MessagingHelper {
     public static void sendRegistrationToServer(String token, Context context) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         String uniqueId = prefs.getString("id", "Unknown");
-        PhoneInfoUtil pu = new PhoneInfoUtil();
+        PhoneInfoUtil pu = new PhoneInfoUtil(context);
         Log.d(TAG, uniqueId + " / " + token);
 
         SharedPreferences.Editor editor = prefs.edit();
