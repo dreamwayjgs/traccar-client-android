@@ -195,12 +195,13 @@ public class MainFragment extends PreferenceFragmentCompat implements OnSharedPr
                 mPopupWindow.setFocusable(true); // 외부 영역 선택히 PopUp 종료
                 mPopupWindow.showAtLocation(popupView, Gravity.CENTER, 0, 0);
 
-
                 Button cancel = (Button) popupView.findViewById(R.id.Cancel);
                 cancel.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         sharedPreferences.edit().putBoolean(KEY_STATUS, true).apply();
+                        TwoStatePreference preference = findPreference(KEY_STATUS);
+                        preference.setChecked(true);
                         mPopupWindow.dismiss();
                     }
                 });
@@ -211,7 +212,7 @@ public class MainFragment extends PreferenceFragmentCompat implements OnSharedPr
                     public void onClick(View v) {
                         sharedPreferences.edit().putBoolean(KEY_STATUS, false).apply();
                         stopTrackingService();
-                        Toast.makeText(getContext(), "Ok", Toast.LENGTH_SHORT).show();
+                        mPopupWindow.dismiss();
                     }
                 });
 
