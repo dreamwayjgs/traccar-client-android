@@ -47,4 +47,6 @@
   <string name="error_msg_invalid_url">Please enter a valid http:// or https:// URL</string>
   <string name="menu_report">REPORT</string>
   <string name="stop_service">You are going to stop traccar service! Authorized User ONLY!</string>
+  <string name="Service_Ok">Ok</string>
+  <string name="Service_Cancel">Cancel</string>
 </resources>

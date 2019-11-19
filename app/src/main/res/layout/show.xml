@@ -28,7 +28,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="#ff0000"
-                android:text="Ok" />
+                android:text="Service_Ok" />
 
             <View
                 android:layout_width="1dp"
@@ -41,7 +41,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="#0081ff"
-                android:text="Cancel" />
+                android:text="Serivce_Cancel" />
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>
