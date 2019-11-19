@@ -29,10 +29,15 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.Browser;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.webkit.URLUtil;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -73,6 +78,7 @@ public class MainFragment extends PreferenceFragmentCompat implements OnSharedPr
 
     private AlarmManager alarmManager;
     private PendingIntent alarmIntent;
+    private PopupWindow mPopupWindow ;
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
@@ -183,7 +189,29 @@ public class MainFragment extends PreferenceFragmentCompat implements OnSharedPr
             if (sharedPreferences.getBoolean(KEY_STATUS, false)) {
                 startTrackingService(true, false);
             } else {
-                stopTrackingService();
+                View popupView = getLayoutInflater().inflate(R.layout.show, null);
+                mPopupWindow = new PopupWindow(popupView, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                //popupView 에서 (LinearLayout 을 사용) 레이아웃이 둘러싸고 있는 컨텐츠의 크기 만큼 팝업 크기를 지정
+                mPopupWindow.setFocusable(true); // 외부 영역 선택히 PopUp 종료
+                mPopupWindow.showAtLocation(popupView, Gravity.CENTER, 0, 0);
+
+
+                Button cancel = (Button) popupView.findViewById(R.id.Cancel);
+                cancel.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mPopupWindow.dismiss();
+                    }
+                });
+
+                Button ok = (Button) popupView.findViewById(R.id.OK);
+                ok.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(getContext(), "Ok", Toast.LENGTH_SHORT).show();
+                        stopTrackingService();                    }
+                });
+
             }
         } else if (key.equals(KEY_DEVICE)) {
             findPreference(KEY_DEVICE).setSummary(sharedPreferences.getString(KEY_DEVICE, null));
@@ -291,11 +319,6 @@ public class MainFragment extends PreferenceFragmentCompat implements OnSharedPr
         alarmManager.cancel(alarmIntent);
         getActivity().stopService(new Intent(getActivity(), TrackingService.class));
         setPreferencesEnabled(true);
-
-        setPreferencesEnabled(false);
-        ContextCompat.startForegroundService(getContext(), new Intent(getActivity(), TrackingService.class));
-        alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
-                ALARM_MANAGER_INTERVAL, ALARM_MANAGER_INTERVAL, alarmIntent);
     }
 
     @Override
