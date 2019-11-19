@@ -201,8 +201,7 @@ public class MainFragment extends PreferenceFragmentCompat implements OnSharedPr
                     @Override
                     public void onClick(View v) {
                         mPopupWindow.dismiss();
-                        SharedPreferences.Editor editor = sharedPreferences.edit();
-                        editor.putBoolean(KEY_STATUS, true);
+                        sharedPreferences.edit().putBoolean(KEY_STATUS, false).apply();
                     }
                 });
 
