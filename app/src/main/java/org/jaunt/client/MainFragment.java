@@ -291,6 +291,11 @@ public class MainFragment extends PreferenceFragmentCompat implements OnSharedPr
         alarmManager.cancel(alarmIntent);
         getActivity().stopService(new Intent(getActivity(), TrackingService.class));
         setPreferencesEnabled(true);
+
+        setPreferencesEnabled(false);
+        ContextCompat.startForegroundService(getContext(), new Intent(getActivity(), TrackingService.class));
+        alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
+                ALARM_MANAGER_INTERVAL, ALARM_MANAGER_INTERVAL, alarmIntent);
     }
 
     @Override
