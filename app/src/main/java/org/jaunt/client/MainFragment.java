@@ -200,17 +200,19 @@ public class MainFragment extends PreferenceFragmentCompat implements OnSharedPr
                 cancel.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        sharedPreferences.edit().putBoolean(KEY_STATUS, true).apply();
                         mPopupWindow.dismiss();
-                        sharedPreferences.edit().putBoolean(KEY_STATUS, false).apply();
                     }
                 });
 
-                Button ok = (Button) popupView.findViewById(R.id.OK);
+                Button ok = (Button) popupView.findViewById(R.id.Ok);
                 ok.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        sharedPreferences.edit().putBoolean(KEY_STATUS, false).apply();
+                        stopTrackingService();
                         Toast.makeText(getContext(), "Ok", Toast.LENGTH_SHORT).show();
-                        stopTrackingService();                    }
+                    }
                 });
 
             }
