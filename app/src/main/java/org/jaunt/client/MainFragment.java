@@ -184,7 +184,7 @@ public class MainFragment extends PreferenceFragmentCompat implements OnSharedPr
     }
 
     @Override
-    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+    public void onSharedPreferenceChanged(final SharedPreferences sharedPreferences, String key) {
         if (key.equals(KEY_STATUS)) {
             if (sharedPreferences.getBoolean(KEY_STATUS, false)) {
                 startTrackingService(true, false);
@@ -201,6 +201,8 @@ public class MainFragment extends PreferenceFragmentCompat implements OnSharedPr
                     @Override
                     public void onClick(View v) {
                         mPopupWindow.dismiss();
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.putBoolean(KEY_STATUS, true);
                     }
                 });
 
