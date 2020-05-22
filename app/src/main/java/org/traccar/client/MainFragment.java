@@ -1,5 +1,5 @@
 /*
- * Copyright 2012 - 2019 Anton Tananaev (anton@traccar.org)
+ * Copyright 2012 - 2020 Anton Tananaev (anton@traccar.org)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,22 +27,27 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.InputType;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.webkit.URLUtil;
+import android.widget.EditText;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.ContextCompat;
 import androidx.preference.EditTextPreference;
+import androidx.preference.EditTextPreferenceDialogFragmentCompat;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
 import androidx.preference.TwoStatePreference;
 
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.webkit.URLUtil;
-import android.widget.Toast;
-
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
@@ -60,6 +65,7 @@ public class MainFragment extends PreferenceFragmentCompat implements OnSharedPr
     public static final String KEY_ANGLE = "angle";
     public static final String KEY_ACCURACY = "accuracy";
     public static final String KEY_STATUS = "status";
+    public static final String KEY_BUFFER = "buffer";
 
     private static final int PERMISSIONS_REQUEST_LOCATION = 2;
 
@@ -134,6 +140,36 @@ public class MainFragment extends PreferenceFragmentCompat implements OnSharedPr
 
     }
 
+    public static class NumericEditTextPreferenceDialogFragment extends EditTextPreferenceDialogFragmentCompat {
+
+        public static NumericEditTextPreferenceDialogFragment newInstance(String key) {
+            final NumericEditTextPreferenceDialogFragment fragment = new NumericEditTextPreferenceDialogFragment();
+            final Bundle bundle = new Bundle();
+            bundle.putString(ARG_KEY, key);
+            fragment.setArguments(bundle);
+            return fragment;
+        }
+
+        @Override
+        protected void onBindDialogView(View view) {
+            EditText editText = view.findViewById(android.R.id.edit);
+            editText.setInputType(InputType.TYPE_CLASS_NUMBER);
+            super.onBindDialogView(view);
+        }
+
+    }
+
+    @Override
+    public void onDisplayPreferenceDialog(Preference preference) {
+        if (Arrays.asList(KEY_INTERVAL, KEY_DISTANCE, KEY_ANGLE).contains(preference.getKey())) {
+            final EditTextPreferenceDialogFragmentCompat f = NumericEditTextPreferenceDialogFragment.newInstance(preference.getKey());
+            f.setTargetFragment(this, 0);
+            f.show(getFragmentManager(), "androidx.preference.PreferenceFragment.DIALOG");
+        } else {
+            super.onDisplayPreferenceDialog(preference);
+        }
+    }
+
     private void removeLauncherIcon() {
         String className = MainActivity.class.getCanonicalName().replace(".MainActivity", ".Launcher");
         ComponentName componentName = new ComponentName(getActivity().getPackageName(), className);
@@ -169,6 +205,7 @@ public class MainFragment extends PreferenceFragmentCompat implements OnSharedPr
         findPreference(KEY_DISTANCE).setEnabled(enabled);
         findPreference(KEY_ANGLE).setEnabled(enabled);
         findPreference(KEY_ACCURACY).setEnabled(enabled);
+        findPreference(KEY_BUFFER).setEnabled(enabled);
     }
 
     @Override
@@ -194,9 +231,6 @@ public class MainFragment extends PreferenceFragmentCompat implements OnSharedPr
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.status) {
             startActivity(new Intent(getActivity(), StatusActivity.class));
-            return true;
-        } else if (item.getItemId() == R.id.about) {
-            startActivity(new Intent(getActivity(), AboutActivity.class));
             return true;
         }
         return super.onOptionsItemSelected(item);
