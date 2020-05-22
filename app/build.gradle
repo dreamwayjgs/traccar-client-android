@@ -1,10 +1,30 @@
 apply plugin: 'com.android.application'
 
 android {
+    signingConfigs {
+        regular {
+            storeFile file('E:\\Clouds_500G\\Dev\\traccar\\hyujaunt-keys\\hyujaunt-regular-release.jks')
+            storePassword 'gksdideo'
+            keyAlias = 'key0'
+            keyPassword 'gksdideo'
+        }
+        debug {
+            storeFile file('E:\\Clouds_500G\\Dev\\traccar\\hyujaunt-keys\\hyujaunt-regular-release.jks')
+            storePassword 'gksdideo'
+            keyAlias = 'key0'
+            keyPassword 'gksdideo'
+        }
+        google {
+            storeFile file('E:\\Clouds_500G\\Dev\\traccar\\hyujaunt-keys\\hyujaunt-regular-release.jks')
+            storePassword 'gksdideo'
+            keyAlias = 'key0'
+            keyPassword 'gksdideo'
+        }
+    }
     compileSdkVersion 29
 
     defaultConfig {
-        applicationId 'org.traccar.client'
+        applicationId 'org.jaunt.client'
         buildConfigField 'boolean', 'HIDDEN_APP', 'false'
         minSdkVersion 16
         targetSdkVersion 29
@@ -23,7 +43,7 @@ android {
         }
         google
         hidden {
-            applicationId 'org.traccar.client.hidden'
+            applicationId 'org.jaunt.client.hidden'
             buildConfigField 'boolean', 'HIDDEN_APP', 'true'
         }
     }
