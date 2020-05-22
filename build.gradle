@@ -1,3 +1,6 @@
+ext {
+    var = 'gksdideo'
+}
 buildscript {
     repositories {
         google()
