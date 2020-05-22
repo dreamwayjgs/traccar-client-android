@@ -73,7 +73,6 @@ public class MainFragment extends PreferenceFragmentCompat implements OnSharedPr
 
     private AlarmManager alarmManager;
     private PendingIntent alarmIntent;
-    private PopupWindow mPopupWindow ;
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
@@ -210,38 +209,12 @@ public class MainFragment extends PreferenceFragmentCompat implements OnSharedPr
     }
 
     @Override
-    public void onSharedPreferenceChanged(final SharedPreferences sharedPreferences, String key) {
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         if (key.equals(KEY_STATUS)) {
             if (sharedPreferences.getBoolean(KEY_STATUS, false)) {
                 startTrackingService(true, false);
             } else {
-                View popupView = getLayoutInflater().inflate(R.layout.show, null);
-                mPopupWindow = new PopupWindow(popupView, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                //popupView 에서 (LinearLayout 을 사용) 레이아웃이 둘러싸고 있는 컨텐츠의 크기 만큼 팝업 크기를 지정
-                mPopupWindow.setFocusable(true); // 외부 영역 선택히 PopUp 종료
-                mPopupWindow.showAtLocation(popupView, Gravity.CENTER, 0, 0);
-
-                Button cancel = (Button) popupView.findViewById(R.id.Cancel);
-                cancel.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        sharedPreferences.edit().putBoolean(KEY_STATUS, true).apply();
-                        TwoStatePreference preference = findPreference(KEY_STATUS);
-                        preference.setChecked(true);
-                        mPopupWindow.dismiss();
-                    }
-                });
-
-                Button ok = (Button) popupView.findViewById(R.id.Ok);
-                ok.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        sharedPreferences.edit().putBoolean(KEY_STATUS, false).apply();
-                        stopTrackingService();
-                        mPopupWindow.dismiss();
-                    }
-                });
-
+                stopTrackingService();
             }
         } else if (key.equals(KEY_DEVICE)) {
             findPreference(KEY_DEVICE).setSummary(sharedPreferences.getString(KEY_DEVICE, null));
@@ -275,28 +248,6 @@ public class MainFragment extends PreferenceFragmentCompat implements OnSharedPr
     }
 
     private void startTrackingService(boolean checkPermission, boolean permission) {
-        FirebaseInstanceId.getInstance().getInstanceId()
-                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
-                        if (!task.isSuccessful()) {
-                            Log.w(TAG, "getInstanceId failed", task.getException());
-                            return;
-                        }
-
-                        // Get new Instance ID token
-                        String token = task.getResult().getToken();
-
-                        // Log and toast
-                        final String s = token;
-
-                        new Thread() {
-                            public void run() {
-                                MessagingHelper.sendRegistrationToServer(s, getContext());
-                            }
-                        }.start();
-                    }
-                });
         if (checkPermission) {
             Set<String> requiredPermissions = new HashSet<>();
             if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -310,7 +261,6 @@ public class MainFragment extends PreferenceFragmentCompat implements OnSharedPr
             if (!permission) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     requestPermissions(requiredPermissions.toArray(new String[requiredPermissions.size()]), PERMISSIONS_REQUEST_LOCATION);
-
                 }
                 return;
             }

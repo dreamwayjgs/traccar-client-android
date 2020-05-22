@@ -11,11 +11,7 @@ android {
         }
         debug {
             storeFile file('E:\\Clouds_500G\\Dev\\traccar\\hyujaunt-keys\\hyujaunt-regular-release.jks')
-<<<<<<< HEAD
             storePassword 'gksdideo'
-=======
-            storePassword var
->>>>>>> firebase
             keyAlias = 'key0'
             keyPassword 'gksdideo'
         }
@@ -29,13 +25,8 @@ android {
     compileSdkVersion 29
 
     defaultConfig {
-<<<<<<< HEAD
         applicationId 'org.jaunt.client'
         buildConfigField 'boolean', 'HIDDEN_APP', 'false'
-=======
-        applicationId "org.jaunt.client"
-        buildConfigField "boolean", "HIDDEN_APP", "false"
->>>>>>> firebase
         minSdkVersion 16
         targetSdkVersion 29
         versionCode 63
@@ -53,13 +44,8 @@ android {
         }
         google
         hidden {
-<<<<<<< HEAD
             applicationId 'org.jaunt.client.hidden'
             buildConfigField 'boolean', 'HIDDEN_APP', 'true'
-=======
-            applicationId "org.jaunt.client.hidden"
-            buildConfigField "boolean", "HIDDEN_APP", "true"
->>>>>>> firebase
         }
     }
 
@@ -71,35 +57,19 @@ android {
 }
 
 dependencies {
-<<<<<<< HEAD
     implementation 'com.google.android.material:material:1.2.0-alpha06'
     implementation 'androidx.preference:preference:1.1.1'
     testImplementation 'junit:junit:4.13'
     testImplementation 'org.robolectric:robolectric:4.1'
     googleImplementation 'com.google.firebase:firebase-core:17.3.0'
-=======
-    implementation("com.squareup.okhttp3:okhttp:4.2.1")
-    implementation 'com.google.android.material:material:1.1.0-alpha10'
-    implementation 'androidx.appcompat:appcompat:1.0.2'
-    implementation 'androidx.preference:preference:1.1.0'
-    testImplementation 'junit:junit:4.12'
-    testImplementation 'org.robolectric:robolectric:4.1'
-    implementation 'com.google.firebase:firebase-analytics:17.2.0'
-    implementation 'com.google.firebase:firebase-messaging:20.0.0'
-    googleImplementation 'com.google.firebase:firebase-core:17.2.0'
->>>>>>> firebase
     googleImplementation 'com.crashlytics.sdk.android:crashlytics:2.10.1'
     googleImplementation 'com.google.android.gms:play-services-location:17.0.0'
 }
 
-<<<<<<< HEAD
 if (getGradle().getStartParameter().getTaskRequests().toString().contains('Google')) {
     apply plugin: 'com.google.gms.google-services'
     apply plugin: 'io.fabric'
-=======
-apply plugin: 'com.google.gms.google-services'
-apply plugin: 'io.fabric'
->>>>>>> firebase
+}
 
 //if (getGradle().getStartParameter().getTaskRequests().toString().contains("Google")) {
 //    apply plugin: 'com.google.gms.google-services'
