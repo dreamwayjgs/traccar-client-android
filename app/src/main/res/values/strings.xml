@@ -23,6 +23,9 @@
   <string name="settings_buffer">Offline buffering</string>
   <string name="settings_buffer_off_summary">Buffering off</string>
   <string name="settings_buffer_on_summary">Buffering on</string>
+  <string name="settings_wifi_only">Update positions through WiFi only</string>
+  <string name="settings_wifi_only_on_summary">Update positions on WiFi</string>
+  <string name="settings_wifi_only_off_summary">Update positions on any connections</string>
   <string name="settings_accuracy_title">Location accuracy</string>
   <string name="settings_accuracy_summary">Desired location accuracy</string>
   <string name="settings_accuracy_high">High</string>

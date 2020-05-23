@@ -19,9 +19,12 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
+
+import androidx.preference.PreferenceManager;
 
 public class NetworkManager extends BroadcastReceiver {
 
@@ -31,6 +34,7 @@ public class NetworkManager extends BroadcastReceiver {
     private NetworkHandler handler;
     private ConnectivityManager connectivityManager;
 
+    private SharedPreferences preferences;
     private boolean wifiOnly;
     private boolean chargingOnly;
 
@@ -40,7 +44,8 @@ public class NetworkManager extends BroadcastReceiver {
         connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
 
         // Get preferences
-        wifiOnly = true;
+        preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        wifiOnly = preferences.getBoolean(MainFragment.KEY_WIFI_ONLY, false);
         chargingOnly = false;
     }
 

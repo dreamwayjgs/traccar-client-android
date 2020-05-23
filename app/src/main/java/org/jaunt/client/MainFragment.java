@@ -66,6 +66,8 @@ public class MainFragment extends PreferenceFragmentCompat implements OnSharedPr
     public static final String KEY_ACCURACY = "accuracy";
     public static final String KEY_STATUS = "status";
     public static final String KEY_BUFFER = "buffer";
+    public static final String KEY_WIFI_ONLY = "wifi_only";
+
 
     private static final int PERMISSIONS_REQUEST_LOCATION = 2;
 
@@ -206,6 +208,7 @@ public class MainFragment extends PreferenceFragmentCompat implements OnSharedPr
         findPreference(KEY_ANGLE).setEnabled(enabled);
         findPreference(KEY_ACCURACY).setEnabled(enabled);
         findPreference(KEY_BUFFER).setEnabled(enabled);
+        findPreference(KEY_WIFI_ONLY).setEnabled(enabled);
     }
 
     @Override
