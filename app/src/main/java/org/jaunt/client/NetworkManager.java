@@ -22,6 +22,7 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.BatteryManager;
 import android.util.Log;
 
 import androidx.preference.PreferenceManager;
@@ -37,6 +38,7 @@ public class NetworkManager extends BroadcastReceiver {
     private SharedPreferences preferences;
     private boolean wifiOnly;
     private boolean chargingOnly;
+    private boolean isCharging;
 
     public NetworkManager(Context context, NetworkHandler handler) {
         this.context = context;
@@ -46,7 +48,7 @@ public class NetworkManager extends BroadcastReceiver {
         // Get preferences
         preferences = PreferenceManager.getDefaultSharedPreferences(context);
         wifiOnly = preferences.getBoolean(MainFragment.KEY_WIFI_ONLY, false);
-        chargingOnly = false;
+        chargingOnly = preferences.getBoolean(MainFragment.KEY_CHARGING_ONLY, false);
     }
 
     public interface NetworkHandler {
@@ -59,11 +61,14 @@ public class NetworkManager extends BroadcastReceiver {
         if (activeNetwork != null) {
             connection = activeNetwork.isConnectedOrConnecting();
             if (wifiOnly) {
-                if (activeNetwork.getType() != ConnectivityManager.TYPE_WIFI)
-                    connection = false;
+                Log.d(TAG, "__charge : wifi checking" + connection);
+                connection = activeNetwork.getType() == ConnectivityManager.TYPE_WIFI;
+                Log.d(TAG, "__charge : wifi changed" + connection);
             }
             if (chargingOnly) {
-                
+                Log.d(TAG, "__charge : charging checking" + connection);
+                connection = isCharging;
+                Log.d(TAG, "__charge : charging changed" + connection);
             }
         }
         return connection;
@@ -72,6 +77,7 @@ public class NetworkManager extends BroadcastReceiver {
     public void start() {
         IntentFilter filter = new IntentFilter();
         filter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
+        filter.addAction(Intent.ACTION_BATTERY_CHANGED);
         context.registerReceiver(this, filter);
     }
 
@@ -81,7 +87,12 @@ public class NetworkManager extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        if (intent.getAction().equals(ConnectivityManager.CONNECTIVITY_ACTION) && handler != null) {
+        if ((intent.getAction().equals(ConnectivityManager.CONNECTIVITY_ACTION) ||
+                intent.getAction().equals(Intent.ACTION_BATTERY_CHANGED)) &&
+                handler != null) {
+            int status = intent.getIntExtra(BatteryManager.EXTRA_STATUS, -1);
+            isCharging = status == BatteryManager.BATTERY_STATUS_CHARGING ||
+                    status == BatteryManager.BATTERY_STATUS_FULL;
             boolean isOnline = isOnline();
             Log.i(TAG, "network " + (isOnline ? "on" : "off"));
             handler.onNetworkUpdate(isOnline);
