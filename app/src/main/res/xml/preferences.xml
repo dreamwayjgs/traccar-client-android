@@ -56,4 +56,11 @@
         android:summaryOn="@string/settings_buffer_on_summary"
         android:title="@string/settings_buffer" />
 
+    <CheckBoxPreference
+        android:defaultValue="false"
+        android:key="wifi_only"
+        android:summaryOff="@string/settings_wifi_only_off_summary"
+        android:summaryOn="@string/settings_wifi_only_on_summary"
+        android:title="@string/settings_wifi_only" />
+
 </PreferenceScreen>
