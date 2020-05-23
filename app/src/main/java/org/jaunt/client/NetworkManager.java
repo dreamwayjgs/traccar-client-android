@@ -31,10 +31,17 @@ public class NetworkManager extends BroadcastReceiver {
     private NetworkHandler handler;
     private ConnectivityManager connectivityManager;
 
+    private boolean wifiOnly;
+    private boolean chargingOnly;
+
     public NetworkManager(Context context, NetworkHandler handler) {
         this.context = context;
         this.handler = handler;
         connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        // Get preferences
+        wifiOnly = true;
+        chargingOnly = false;
     }
 
     public interface NetworkHandler {
@@ -43,7 +50,18 @@ public class NetworkManager extends BroadcastReceiver {
 
     public boolean isOnline() {
         NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();
-        return activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+        boolean connection = false;
+        if (activeNetwork != null) {
+            connection = activeNetwork.isConnectedOrConnecting();
+            if (wifiOnly) {
+                if (activeNetwork.getType() != ConnectivityManager.TYPE_WIFI)
+                    connection = false;
+            }
+            if (chargingOnly) {
+                
+            }
+        }
+        return connection;
     }
 
     public void start() {
