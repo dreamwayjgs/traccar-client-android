@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 - 2017 Anton Tananaev (anton@traccar.org)
+ * Copyright 2016 - 2020 Anton Tananaev (anton@traccar.org)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 package org.jaunt.client;
 
 import android.annotation.TargetApi;
-import android.app.Application;
+import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -27,7 +27,10 @@ import android.net.Uri;
 import android.os.Build;
 import android.preference.PreferenceManager;
 
-public class MainApplication extends Application {
+import androidx.annotation.NonNull;
+import androidx.multidex.MultiDexApplication;
+
+public class MainApplication extends MultiDexApplication {
 
     public static final String PRIMARY_CHANNEL = "default";
 
@@ -46,7 +49,7 @@ public class MainApplication extends Application {
     @TargetApi(Build.VERSION_CODES.O)
     private void registerChannel() {
         NotificationChannel channel = new NotificationChannel(
-                PRIMARY_CHANNEL, getString(R.string.channel_default), NotificationManager.IMPORTANCE_MIN);
+                PRIMARY_CHANNEL, getString(R.string.channel_default), NotificationManager.IMPORTANCE_LOW);
         channel.setLightColor(Color.GREEN);
         channel.setLockscreenVisibility(Notification.VISIBILITY_SECRET);
         ((NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE)).createNotificationChannel(channel);
@@ -68,6 +71,9 @@ public class MainApplication extends Application {
             editor.remove("secure");
             editor.apply();
         }
+    }
+
+    public void handleRatingFlow(@NonNull Activity activity) {
     }
 
 }

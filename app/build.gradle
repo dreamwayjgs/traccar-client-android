@@ -29,17 +29,29 @@ android {
         buildConfigField "boolean", "HIDDEN_APP", "false"
         minSdkVersion 16
         targetSdkVersion 29
-        versionCode 57
-        versionName '5.20'
+        versionCode 66
+        versionName '6.5'
+        multiDexEnabled true
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES'
     }
 
     lintOptions {
         checkReleaseBuilds false
     }
 
-    flavorDimensions "default"
+    flavorDimensions 'default'
     productFlavors {
-        regular
+        regular {
+            isDefault = true
+        }
         google
         hidden {
             applicationId "org.jaunt.client.hidden"
@@ -55,34 +67,33 @@ android {
 }
 
 dependencies {
-    implementation("com.squareup.okhttp3:okhttp:4.2.1")
-    implementation 'com.google.android.material:material:1.1.0-alpha10'
-    implementation 'androidx.appcompat:appcompat:1.0.2'
-    implementation 'androidx.preference:preference:1.1.0'
-    testImplementation 'junit:junit:4.12'
-    testImplementation 'org.robolectric:robolectric:4.1'
-    implementation 'com.google.firebase:firebase-analytics:17.2.0'
-    implementation 'com.google.firebase:firebase-messaging:20.0.0'
-    googleImplementation 'com.google.firebase:firebase-core:17.2.0'
-    googleImplementation 'com.crashlytics.sdk.android:crashlytics:2.10.1'
-    googleImplementation "com.google.android.gms:play-services-location:17.0.0"
+    implementation 'com.google.android.material:material:1.3.0-alpha03'
+    implementation 'androidx.multidex:multidex:2.0.1'
+    implementation 'androidx.preference:preference:1.1.1'
+    testImplementation 'junit:junit:4.13'
+    testImplementation 'org.robolectric:robolectric:4.2.1'
+    googleImplementation 'com.google.firebase:firebase-core:18.0.0'
+    googleImplementation 'com.google.firebase:firebase-crashlytics-gradle:2.4.1'
+    googleImplementation 'com.google.firebase:firebase-analytics:18.0.0'
+    googleImplementation 'com.google.android.gms:play-services-location:17.1.0'
+    googleImplementation 'com.google.android.play:core:1.8.3'
+    implementation("com.squareup.okhttp3:okhttp:4.9.0")
+    implementation platform('com.google.firebase:firebase-bom:26.1.0')
+    implementation 'com.google.firebase:firebase-messaging:21.0.0'
 }
 
-apply plugin: 'com.google.gms.google-services'
-apply plugin: 'io.fabric'
+if (getGradle().getStartParameter().getTaskRequests().toString().contains('Google')) {
+    apply plugin: 'com.google.gms.google-services'
+    apply plugin: 'com.google.firebase.crashlytics'
 
-//if (getGradle().getStartParameter().getTaskRequests().toString().contains("Google")) {
-//    apply plugin: 'com.google.gms.google-services'
-//    apply plugin: 'io.fabric'
-//
-//    task copyJson(type: Copy) {
-//        from '../../traccar-shared/google-services'
-//        into '.'
-//        include 'traccar-client-android.json'
-//        rename('traccar-client-android.json', 'google-services.json')
-//    }
-//
-//    afterEvaluate {
-//        preBuild.dependsOn copyJson
-//    }
-//}
+    task copyJson(type: Copy) {
+        from '../../environment/google-services'
+        into '.'
+        include 'traccar-client-android.json'
+        rename('traccar-client-android.json', 'google-services.json')
+    }
+
+    afterEvaluate {
+        preBuild.dependsOn copyJson
+    }
+}

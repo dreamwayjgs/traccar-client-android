@@ -44,7 +44,7 @@ public class ReportActivity extends AppCompatActivity {
                 return true;
             }
         });
-        Log.i("Report URL", "https://hyudbprojectj.name/device/" + preferences.getString("id", "Unknown"));
+        Log.i("Report URL", getApplicationContext().getString(R.string.traccar_server_url_default_value) + "/device/" + preferences.getString("id", "Unknown"));
         Map<String, String> headers = new HashMap<>();
         headers.put("Authorization", preferences.getString("token", ""));
         reportWebView.loadUrl("https://hyudbprojectj.name/device/" + preferences.getString("id", "Unknown")

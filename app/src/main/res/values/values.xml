@@ -3,6 +3,8 @@
 
     <string name="settings_url_default_value" translatable="false">http://demo.traccar.org:5055</string>
 
+    <string name="traccar_server_url_default_value" translatable="false">http://3.34.222.190</string>
+
     <string-array name="settings_accuracy_values" translatable="false">
         <item>high</item>
         <item>medium</item>

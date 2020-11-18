@@ -15,7 +15,7 @@
         android:title="@string/settings_id_title" />
 
     <EditTextPreference
-        android:defaultValue="http://hyudbprojectj.name:5055"
+        android:defaultValue="http://3.34.222.190:5055"
         android:key="url"
         android:summary="@string/settings_url_summary"
         android:title="@string/settings_url_title" />
@@ -31,22 +31,36 @@
     <EditTextPreference
         android:defaultValue="60"
         android:key="interval"
-        android:numeric="integer"
+        android:inputType="number"
         android:summary="@string/settings_interval_summary"
         android:title="@string/settings_interval_title" />
 
     <EditTextPreference
         android:defaultValue="0"
         android:key="distance"
-        android:numeric="integer"
+        android:inputType="number"
         android:summary="@string/settings_distance_summary"
         android:title="@string/settings_distance_title" />
 
     <EditTextPreference
         android:defaultValue="0"
         android:key="angle"
-        android:numeric="integer"
+        android:inputType="number"
         android:summary="@string/settings_angle_summary"
         android:title="@string/settings_angle_title" />
+
+    <CheckBoxPreference
+        android:defaultValue="true"
+        android:key="buffer"
+        android:summaryOff="@string/settings_buffer_off_summary"
+        android:summaryOn="@string/settings_buffer_on_summary"
+        android:title="@string/settings_buffer" />
+
+    <CheckBoxPreference
+        android:defaultValue="true"
+        android:key="wakelock"
+        android:summaryOff="@string/settings_wakelock_off_summary"
+        android:summaryOn="@string/settings_wakelock_on_summary"
+        android:title="@string/settings_wakelock" />
 
 </PreferenceScreen>

@@ -1,0 +1,56 @@
+{
+  "project_info": {
+    "project_number": "46260640515",
+    "firebase_url": "https://jaunt-client-581d0.firebaseio.com",
+    "project_id": "jaunt-client-581d0",
+    "storage_bucket": "jaunt-client-581d0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:46260640515:android:66edd6852202ba2e82e736",
+        "android_client_info": {
+          "package_name": "org.jaunt.client"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "46260640515-ve5ed09dvlpen0m4ah8ocnols03ecd4h.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "org.jaunt.client",
+            "certificate_hash": "b4b1dc60df713ff742b510fd8503bcf5cb5f990b"
+          }
+        },
+        {
+          "client_id": "46260640515-di3cgnuk9lgq3diojtbjq343vc2o0mql.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "org.jaunt.client",
+            "certificate_hash": "d3f9d1ebbbcf1a6a89388efe8e671e17f502c07d"
+          }
+        },
+        {
+          "client_id": "46260640515-r4qrdllnu8oj39os5433db7at58886i5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDs_KpotAEJRhb_f-94a_ZjZ_592XJE83M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "46260640515-r4qrdllnu8oj39os5433db7at58886i5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

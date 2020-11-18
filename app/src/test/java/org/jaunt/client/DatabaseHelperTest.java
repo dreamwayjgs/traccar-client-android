@@ -2,6 +2,7 @@
 package org.jaunt.client;
 
 import android.location.Location;
+import android.os.Build;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -13,6 +14,7 @@ import java.util.Date;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
+@Config(sdk = Build.VERSION_CODES.P)
 @RunWith(RobolectricTestRunner.class)
 public class DatabaseHelperTest {
 
